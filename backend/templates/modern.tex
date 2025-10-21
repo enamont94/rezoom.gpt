@@ -1,0 +1,143 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fontawesome}
+
+% Custom colors
+\definecolor{primary}{RGB}{0,119,255}
+\definecolor{secondary}{RGB}{107,114,128}
+\definecolor{accent}{RGB}{59,130,246}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Custom section formatting
+\titleformat{\section}{\large\bfseries\color{primary}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{accent}}{}{0em}{}
+
+% Custom commands
+\newcommand{\resumeitem}[1]{\item\small{#1}}
+\newcommand{\resumesubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumesubitem}[1]{\resumeitem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\begin{document}
+
+% Header
+\begin{center}
+    {\Huge \textbf{\textcolor{primary}{{{ name }}}}} \\
+    \vspace{2pt}
+    {\large \textbf{{{ title }}}} \\
+    \vspace{4pt}
+    {% if email %}{{ email }}{% endif %}{% if phone %} $\bullet$ {{ phone }}{% endif %}{% if location %} $\bullet$ {{ location }}{% endif %}
+    {% if linkedin or website %}
+    \\ \vspace{2pt}
+    {% if linkedin %}\faLinkedin\ \href{https://linkedin.com/in/{{ linkedin }}}{linkedin.com/in/{{ linkedin }}}{% endif %}{% if linkedin and website %} $\bullet$ {% endif %}{% if website %}\faGlobe\ \href{https://{{ website }}}{{{ website }}}{% endif %}
+    {% endif %}
+\end{center}
+
+% Professional Summary
+{% if summary %}
+\section{Professional Summary}
+{{ summary }}
+{% endif %}
+
+% Experience
+{% if experience %}
+\section{Professional Experience}
+\begin{itemize}[leftmargin=0.15in, label={}]
+{% for job in experience %}
+\resumesubheading
+    {{{ job.title }}}{{{ job.end_date if not job.current else "Present" }}}
+    {{{ job.company }}}{{{ job.start_date }}}
+{% if job.description %}
+\resumeitem{{{ job.description }}}
+{% endif %}
+{% if job.achievements %}
+{% for achievement in job.achievements %}
+\resumeitem{{{ achievement }}}
+{% endfor %}
+{% endif %}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Skills
+{% if skills %}
+\section{Key Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+{% for skill in skills %}
+\resumeitem{{{ skill }}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Education
+{% if education %}
+\section{Education}
+\begin{itemize}[leftmargin=0.15in, label={}]
+{% for edu in education %}
+\resumesubheading
+    {{{ edu.degree }}}{{{ edu.graduation_date }}}
+    {{{ edu.institution }}}{{{ edu.location }}}
+{% if edu.gpa %}
+\resumeitem{GPA: {{ edu.gpa }}}
+{% endif %}
+{% if edu.relevant_coursework %}
+\resumeitem{Relevant Coursework: {{ edu.relevant_coursework | join(', ') }}
+{% endif %}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Certifications
+{% if certifications %}
+\section{Certifications}
+\begin{itemize}[leftmargin=0.15in, label={}]
+{% for cert in certifications %}
+\resumeitem{{{ cert }}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Projects
+{% if projects %}
+\section{Projects}
+\begin{itemize}[leftmargin=0.15in, label={}]
+{% for project in projects %}
+\resumeitem{{{ project }}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Languages
+{% if languages %}
+\section{Languages}
+\begin{itemize}[leftmargin=0.15in, label={}]
+{% for language in languages %}
+\resumeitem{{{ language }}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Watermark
+{% if watermark %}
+\vfill
+\begin{center}
+\small \textcolor{secondary}{{{ watermark }}}
+\end{center}
+{% endif %}
+
+\end{document}
